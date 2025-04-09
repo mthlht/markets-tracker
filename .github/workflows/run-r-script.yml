@@ -1,0 +1,26 @@
+name: Run R script every hour
+
+on:
+  schedule:
+    - cron: '0 * * * *'  # Toutes les heures à XX:00 UTC
+  workflow_dispatch:      # Permet aussi de lancer manuellement le workflow
+
+jobs:
+  run-r-script:
+    runs-on: ubuntu-latest  # Toujours sur un runner GitHub (pas nécessairement ubuntu, mais ici on utilise un runner comme base)
+
+    container:
+      image: rocker/r-ver:4.1.0  # Utilisation d'une image Docker officielle avec R préinstallé
+      options: --user root  # Si tu as besoin de permissions root, sinon, tu peux omettre cette option
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install required R packages
+        run: |
+          Rscript -e 'install.packages(c("dplyr", "ggplot2", "tidyr", "lubridate"), repos="https://cloud.r-project.org")'  # remplace par tes paquets nécessaires
+
+      - name: Run R script
+        run: |
+          Rscript script/data-dl-and-prep.R
