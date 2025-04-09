@@ -33,4 +33,5 @@ jobs:
 
       - name: Run R script
         run: |
-          script/data-dl-and-prep.R
+          Rscript script/data-dl-and-prep.R
+          
