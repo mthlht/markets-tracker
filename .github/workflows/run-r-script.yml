@@ -42,3 +42,13 @@ jobs:
         run: |
           Rscript script/data-dl-and-prep.R
           
+      - name: Add tidy_markets_data_to_flourish.csv to git, commit and push
+        run: |
+          git config --global user.name "github-actions"
+          git config --global user.email "github-actions@github.com"
+          git add data/tidy_markets_data_to_flourish.csv
+          git commit -m "Add generated data/tidy_markets_data_to_flourish.csv"
+          git push
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          
