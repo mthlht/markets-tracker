@@ -7,20 +7,34 @@ on:
 
 jobs:
   run-r-script:
-    runs-on: ubuntu-latest  # Toujours sur un runner GitHub (pas nécessairement ubuntu, mais ici on utilise un runner comme base)
+    runs-on: ubuntu-latest  # Utilisation d'un runner GitHub pour le job
 
     container:
-      image: rocker/r-ver:4.1.0  # Utilisation d'une image Docker officielle avec R préinstallé
-      options: --user root  # Si tu as besoin de permissions root, sinon, tu peux omettre cette option
+      image: rocker/r-ver:4.1.0  # Utilisation d'une image Docker avec R préinstallé
+      options: --user root  # Si nécessaire, sinon tu peux omettre cette ligne
 
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
 
+      - name: Set up R
+        uses: r-lib/actions/setup-r@v2  # Installer R et ses outils dans le container
+
+      # Etape de mise en cache des packages R
+      - name: Cache R library
+        id: cache-r
+        uses: actions/cache@v3
+        with:
+          path: ~/.local/share/R/library  # Emplacement des bibliothèques R installées
+          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/*.R') }}  # Clé de cache basée sur les fichiers .R
+          restore-keys: |
+            ${{ runner.os }}-r-packages-
+
+      # Etape d'installation des packages R, seulement si nécessaire (si pas dans le cache)
       - name: Install required R packages
         run: |
-          Rscript -e 'install.packages(c("dplyr", "ggplot2", "tidyr", "lubridate"), repos="https://cloud.r-project.org")'  # remplace par tes paquets nécessaires
+          Rscript -e 'install.packages(c("dplyr", "ggplot2", "tidyr", "lubridate"), repos="https://cloud.r-project.org")'  # Remplacer avec tes packages
 
       - name: Run R script
         run: |
-          Rscript script/data-dl-and-prep.R
+          script/data-dl-and-prep.R
