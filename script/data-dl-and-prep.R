@@ -54,7 +54,7 @@ markets_data_into_base100 <- tidy_markets_data %>%
   dplyr::select(date, evol_base_100, market)
 
 # Transposition des données pour Flourish
-tidy_data_to_flourish <- data.frame(date=seq(lubridate::ymd("2025-01-17"), lubridate::ymd("2025-04-07"), by = "1 day")) %>%
+tidy_data_to_flourish <- data.frame(date=seq(lubridate::ymd("2025-01-17"), lubridate::today() by = "1 day")) %>%
   dplyr::left_join(markets_data_into_base100, by = "date") %>%
   dplyr::mutate(market=ifelse(is.na(market), "remove", market)) %>%
   tidyr::spread(key="market", value="evol_base_100", fill="") %>%
