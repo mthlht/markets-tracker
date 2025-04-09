@@ -29,7 +29,7 @@ jobs:
       # Etape d'installation des packages R, seulement si nécessaire (si pas dans le cache)
       - name: Install required R packages
         run: |
-          Rscript -e 'install.packages(c("magrittr", "dplyr", "tidyr", "lubridate", "tidyquant", "readr", "purrr"), repos="https://cloud.r-project.org")'  # Remplacer avec tes packages
+          Rscript -e 'install.packages(c("magrittr", "dplyr", "tidyr", "lubridate", "quantmod", "readr", "purrr"), repos="https://cloud.r-project.org")'  # Remplacer avec tes packages
 
       - name: Run R script
         run: |

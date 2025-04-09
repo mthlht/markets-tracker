@@ -1,4 +1,4 @@
-#PACKAGE USED : magrittr, dplyr, tidyr, lubridate, tidyquant, readr
+#PACKAGE USED : magrittr, dplyr, tidyr, lubridate, quantmod, readr, purrr
 
 library(magrittr)
 
@@ -17,7 +17,12 @@ list_of_markets <- c("^DJI", # Dow Jones Industrial Average
 
 markets_data <- purrr::map_dfr(list_of_markets, function(x) {
   
-  tidyquant::tq_get(x, from="2025-01-01", to=Sys.Date())
+  result_xts <- quantmod::getSymbols(x, src = "yahoo", from = "2022-01-01", to = lubridate::today(), auto.assign = F)
+  colnames(result_xts) <- c("open", "high", "low", "close", "volume", "adjusted")
+  result_df <- data.frame(date = zoo::index(result_xts), zoo::coredata(result_xts)) %>%
+    dplyr::mutate(symbol=x)
+  
+  return(result_df)
   
 })
 
