@@ -4,6 +4,9 @@ on:
   schedule:
     - cron: '0 * * * *'  # Toutes les heures à XX:00 UTC
   workflow_dispatch:      # Permet aussi de lancer manuellement le workflow
+  
+permissions:
+  contents: write  # Permet au bot de pousser des commits dans le dépôt
 
 jobs:
   run-r-script:
@@ -29,7 +32,7 @@ jobs:
         uses: actions/cache@v3
         with:
           path: ~/.local/share/R/library  # Emplacement des bibliothèques R installées
-          key: ${{ runner.os }}-r-packages-${{ hashFiles('**/*.R') }}  # Clé de cache basée sur les fichiers .R
+          key: ${{ runner.os }}-r-packages-${{ hashFiles('DESCRIPTION', 'renv.lock') }}  # Clé basée sur les dépendances des packages (fichiers DESCRIPTION ou renv.lock)
           restore-keys: |
             ${{ runner.os }}-r-packages-
 
