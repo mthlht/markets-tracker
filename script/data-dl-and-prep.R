@@ -4,7 +4,7 @@ library(magrittr)
 
 # Liste des valeurs boursières à télécharger
 
-list_of_markets <- c("^DJI", # Dow Jones Industrial Average
+list_of_markets <- c("^GSPC", # Dow Jones Industrial Average
                      "^GDAXI", # Dax
                      "^FCHI", # CAC 40
                      "^N225", # NIKKEI 225
@@ -12,6 +12,7 @@ list_of_markets <- c("^DJI", # Dow Jones Industrial Average
                      "000001.SS", # SSE COMPOSITE INDEX
                      "^HSI" # HANG SENG
 )
+
 
 # Téléchargement des valeurs
 
@@ -29,7 +30,7 @@ markets_data <- purrr::map_dfr(list_of_markets, function(x) {
 # Tri des données de marché
 tidy_markets_data <- markets_data %>%
   dplyr::mutate(market = dplyr::case_when(
-    symbol == "^DJI" ~ "New York",
+    symbol == "^GSPC" ~ "New York",
     symbol == "^GDAXI" ~ "Francfort", # Dax
     symbol == "^FCHI" ~ "Paris", # CAC 40
     symbol == "^N225" ~ "Tokyo", # NIKKEI 225
