@@ -4,7 +4,7 @@ library(magrittr)
 
 # Liste des valeurs boursières à télécharger
 
-list_of_markets <- c("^GSPC", # Dow Jones Industrial Average
+list_of_markets <- c("^GSPC", # S&P 500
                      "^GDAXI", # Dax
                      "^FCHI", # CAC 40
                      "^N225", # NIKKEI 225
