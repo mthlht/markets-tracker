@@ -2,6 +2,9 @@
 
 library(magrittr)
 
+# Language en Français
+Sys.setlocale("LC_TIME", "fr_FR.UTF-8") 
+
 # Liste des valeurs boursières à télécharger
 
 list_of_markets <- c("^GSPC", # S&P 500
