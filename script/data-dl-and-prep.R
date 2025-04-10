@@ -3,7 +3,15 @@
 library(magrittr)
 
 # Language en Français
-Sys.setlocale("LC_TIME", "fr_FR.UTF-8") 
+Sys.setlocale("LC_TIME", "fr_FR.UTF-8")
+
+# Chargement dernières valeurs (via Google Finance)
+url_last_values <- "https://docs.google.com/spreadsheets/d/e/2PACX-1vQdHdcdrrcg9gHrffH5AJLjDFNbFJVL93dozzkZJDTX-OIa7ygdZPcT7aG4vZfYhTzKZfeng4iI1eaJ/pub?gid=1033426774&single=true&output=csv"
+
+data_last_valuues <- readr::read_csv(url_last_values,
+                                     col_types = readr::cols(.default="c")) %>%
+  dplyr::filter(is_data_ok=="TRUE") %>%
+  dplyr::select(date, market, price)
 
 # Liste des valeurs boursières à télécharger
 
